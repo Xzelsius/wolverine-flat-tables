@@ -1,0 +1,22 @@
+# Schema: http://EditorConfig.org
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+indent_size = 4
+
+[*.json]
+indent_size = 2
+
+[*.{xml,props,targets,*proj}]
+indent_size = 2
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
