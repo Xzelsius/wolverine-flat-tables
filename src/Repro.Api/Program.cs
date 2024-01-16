@@ -35,6 +35,7 @@ public class Program
             }
 
             opts.Projections.Snapshot<Todo>(SnapshotLifecycle.Inline, p => p.DeleteEvent<TodoDeleted>());
+            opts.Projections.Add<TableProjection>(ProjectionLifecycle.Inline);
         });
 
         marten.UseLightweightSessions();

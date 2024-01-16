@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.4.0" />
     <PackageReference Include="Marten" Version="6.3.0" />
+    <PackageReference Include="SqlKata" Version="2.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="WolverineFx" Version="1.9.0" />
     <PackageReference Include="WolverineFx.Http" Version="1.9.0" />
