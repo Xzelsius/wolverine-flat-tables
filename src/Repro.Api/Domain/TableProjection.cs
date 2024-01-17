@@ -51,49 +51,38 @@ public class TableProjection : EventProjection
             new Query(_tableIdentifier.ToString())
                 .AsInsert(new
                 {
-                    id = "?",
-                    description = "?",
-                    created_at = "?"
+                    id = @event.Id,
+                    description = @event.Description,
+                    created_at = @event.CreatedAt
                 }));
 
-        ops.QueueSqlCommand(sql, @event.Id, @event.Description, @event.CreatedAt);
+        ops.QueueSqlCommand(sql.RawSql, sql.Bindings.ToArray());
     }
 
     public void Project(RowUpdated @event, IDocumentOperations ops)
     {
         var sql = ToStatement(
             new Query(_tableIdentifier.ToString())
-                .Where(new { id = "?" })
+                .Where(new { id = @event.Id })
                 .AsUpdate(new
                 {
-                    description = "?",
-                    remarks = "?",
-                    some_guid = "?",
-                    some_nullable_guid = "?",
-                    some_int = "?",
-                    some_nullable_int = "?",
-                    some_double = "?",
-                    some_nullable_double = "?",
-                    modified_at = "?",
+                    description = @event.Description,
+                    remarks = @event.Remarks ?? (object)DBNull.Value,
+                    some_guid = @event.SomeGuid,
+                    some_nullable_guid = @event.SomeNullableGuid ?? (object)DBNull.Value,
+                    some_int = @event.SomeInt,
+                    some_nullable_int = @event.SomeNullableInt ?? (object)DBNull.Value,
+                    some_double = @event.SomeDouble,
+                    some_nullable_double = @event.SomeNullableDouble ?? (object)DBNull.Value,
+                    modified_at = @event.ModifiedAt,
                 }));
 
-        ops.QueueSqlCommand(
-            sql,
-            @event.Description,
-            @event.Remarks ?? (object)DBNull.Value,
-            @event.SomeGuid,
-            @event.SomeNullableGuid ?? (object)DBNull.Value,
-            @event.SomeInt,
-            @event.SomeNullableInt ?? (object)DBNull.Value,
-            @event.SomeDouble,
-            @event.SomeNullableDouble ?? (object)DBNull.Value,
-            @event.ModifiedAt,
-            @event.Id);
+        ops.QueueSqlCommand(sql.RawSql, sql.Bindings.ToArray());
     }
 
-    private static string ToStatement(Query query)
+    private static SqlResult ToStatement(Query query)
     {
         var compiled = new PostgresCompiler().Compile(query);
-        return compiled.RawSql;
+        return compiled;
     }
 }
